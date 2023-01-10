@@ -1,23 +1,5 @@
 <template>
-
-    <!-- <GMapMap
-      :center="center"
-      :options="options"
-      :zoom="10"
-      map-type-id="terrain"
-      style="width: 100vw; height: 20rem"
-    >
-      <GMapCluster :zoomOnClick="true">
-        <GMapMarker
-          :key="index"
-          v-for="(m, index) in markers"
-          :position="m.position"
-          :clickable="true"
-          :draggable="true"
-          @click="center = m.position"
-        />
-      </GMapCluster>
-    </GMapMap> -->
+    <!-- from กรอกข้อมูลที่จะค้นหา -->
     <div class="text-center">
         <h2>ค้นหาจาก googlemap</h2>
         <label>สถานที่:</label>
@@ -26,41 +8,26 @@
         <label>ประเภทธุรกิจ:</label>
         <input v-model="type" type="text" />
         &nbsp;
-        <button class="button" @click="testCall">Search</button>
-        <!-- <h6>lat:{{results.lat}} , lng:{{results.lng}}</h6> -->
+        <button class="button" @click="Call">Search</button>
     </div>
 
+    <!-- Map -->
     <GMapMap class="GMapMap" :center="center" :options="options" :zoom="15" map-type-id="terrain">
       <GMapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :label="m.label" :clickable="true" @click="center=m.position" />
     </GMapMap>
-
-    <!-- {{testCall()}} -->
 </template>
-<!-- <GMapMarker
-:key="index"
-v-for="(m, index) in markers"
-:position="m.position"
-:label="m.label"
-:clickable="true"
-:draggable="true"
-@click="center=m.position"
-/>
-</GMapMap> -->
 <script>
     import axios from 'axios';
     
     export default {
         data() {
+            // ตั้งค่าตัวแปรใน default
             return {
                 center: { lat: 13.828253, lng: 100.5284507 },
                 options: {
                     mapId:'xxx' //here comes your map id
                 },
-                markers: [
-                    // { position: { lat: 13.828253, lng: 100.5284507 } , label: "Marker 1"},
-                    // { position: { lat: 13.822253, lng: 100.1254507 } , label: "Marker 2"},
-                    // { position: { lat: 13.823253, lng: 100.5244507 } , label: "Marker 3"}
-                ],
+                markers: [],
                 query: '',
                 results: {},
                 address: 'เขตบางซื่อ',
@@ -69,7 +36,8 @@ v-for="(m, index) in markers"
             };
         },
         methods: {
-                testCall() {
+                // เรียก API จาก backend
+                Call() {
                     const url = 'http://localhost:4001/googlemap';
                     axios.post(url, {
                         address: this.address,
@@ -90,7 +58,8 @@ v-for="(m, index) in markers"
         },
     };
 </script>
-  
+
+<!-- ตั้งค่า css -->
 <style>
   body {
     margin: 0;
